@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<title>Gonzalez Delivery</title>
+<style>
+:root{--bg:#090909;--panel:#151515;--panel2:#1d1d1d;--red:#e3262e;--red2:#ff4249;--text:#f5f5f5;--muted:#aaa;--line:#303030;--green:#28b56b;--radius:17px}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#101010 0%,#080808 100%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;font-size:16px;line-height:1.45;padding-bottom:105px}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+header{padding:22px 17px 16px;background:linear-gradient(135deg,#1a1a1a,#090909);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:56px;height:56px;border:2px solid var(--red);border-radius:16px;display:grid;place-items:center;font-weight:900;font-size:22px;color:white;box-shadow:0 0 22px #e3262e35}
+.brand h1{font-size:21px;line-height:1.1;margin:0;font-weight:900;letter-spacing:.3px}
+.brand h1 span{color:var(--red2)}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:13px}
+main{max-width:760px;margin:0 auto;padding:16px}
+h2{font-size:20px;margin:4px 0 12px}
+h3{font-size:17px;margin:0 0 10px}
+p{margin:7px 0}
+.muted{color:var(--muted);font-size:14px}
+.section{margin:18px 0}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:15px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+.category{background:linear-gradient(145deg,#202020,#111);border:1px solid #353535;color:white;border-radius:17px;padding:18px 12px;min-height:115px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-weight:800}
+.category .ico{font-size:30px}
+.category.active{border:2px solid var(--red);background:#2a1112;box-shadow:0 0 0 2px #e3262e20}
+.btn{border:0;border-radius:13px;padding:13px 16px;font-weight:800;background:var(--red);color:white}
+.btn:hover{background:var(--red2)}
+.btn.secondary{background:#292929;border:1px solid #444;color:#fff}
+.btn.ghost{background:transparent;border:1px solid #555;color:#fff}
+.btn.small{padding:9px 12px;font-size:14px}
+.btn.full{width:100%}
+.btnrow{display:flex;gap:9px;flex-wrap:wrap}
+label{display:block;font-weight:700;font-size:14px;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:13px 12px;background:#0d0d0d;border:1px solid #414141;border-radius:11px;color:white;outline:none;min-height:47px}
+input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 0 2px #e3262e24}
+textarea{min-height:88px;resize:vertical}
+input::placeholder,textarea::placeholder{color:#858585}
+.fieldrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choicegrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.choice{background:#101010;border:1px solid #3b3b3b;border-radius:12px;padding:12px;color:white;text-align:left}
+.choice.selected{border:2px solid var(--red);background:#281112}
+.badge{display:inline-block;padding:4px 9px;border-radius:999px;background:#351315;color:#ffb8bb;font-size:12px;font-weight:800}
+.notice{padding:12px;border:1px solid #694044;background:#251214;border-radius:12px;color:#ffdfe0;font-size:14px;margin:12px 0}
+.notice.info{border-color:#3b3b3b;background:#1b1b1b;color:#ddd}
+.notice.good{border-color:#245a3e;background:#102219;color:#c9f4dc}
+.place-card,.summary-card{background:#171717;border:1px solid #393939;border-radius:15px;padding:14px;margin:10px 0}
+.place-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.place-head strong{font-size:16px}
+.place-cost{font-weight:900;color:#ff6a70;white-space:nowrap}
+hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+.hidden{display:none!important}
+.smallmuted{font-size:12px;color:var(--muted)}
+.sticky{position:fixed;bottom:0;left:0;right:0;background:#101010f2;backdrop-filter:blur(12px);border-top:1px solid #383838;padding:10px 14px calc(10px + env(safe-area-inset-bottom));z-index:20}
+.stickyinner{max-width:760px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sticky strong{display:block;font-size:15px}
+.sticky span{font-size:12px;color:var(--muted)}
+.sticky .btn{white-space:nowrap}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.checkline{display:flex;align-items:center;gap:9px;font-size:14px;margin:12px 0}
+.checkline input{width:19px;min-height:19px;accent-color:var(--red)}
+.itemrow{display:grid;grid-template-columns:1fr 90px;gap:8px;align-items:end;background:#111;padding:10px;border-radius:12px;margin:8px 0}
+.itemrow .remove{background:transparent;border:1px solid #6b3033;color:#ffb5b8;border-radius:9px;padding:7px 9px}
+.footer{text-align:center;color:#777;font-size:12px;padding:20px 0}
+.tariff-row{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #303030}
+.tariff-row:last-child{border:0}
+@media(max-width:420px){main{padding:12px}.fieldrow{grid-template-columns:1fr}.category{min-height:104px}.stickyinner{gap:8px}.sticky .btn{padding:12px}.brand h1{font-size:19px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <div class="logo">GD</div>
+    <div><h1>GONZALEZ <span>DELIVERY</span></h1><p>Rápido, fácil y hasta tu puerta</p></div>
+  </div>
+</header>
+<main>
+  <section id="home">
+    <div class="section">
+      <h2>¡Hola! Bienvenido a Gonzalez Delivery. ¿Qué necesitas hoy?</h2>
+      <p class="muted">Selecciona uno o varios servicios. Puedes combinar establecimientos en un mismo pedido.</p>
+      <div id="hoursNotice" class="notice info"></div>
+    </div>
+    <div class="section">
+      <div class="topline"><h2>Servicios disponibles</h2><button class="btn ghost small" onclick="showTariffs()">Consultar tarifas</button></div>
+      <div class="grid" id="categoryGrid">
+        <button class="category" onclick="startCategory('Comida')"><span class="ico">🍔</span>Comida</button>
+        <button class="category" onclick="startCategory('Medicinas')"><span class="ico">💊</span>Medicinas</button>
+        <button class="category" onclick="startCategory('Compras')"><span class="ico">🛒</span>Compras</button>
+        <button class="category" onclick="startCategory('Paquetes y mandados')"><span class="ico">📦</span>Paquetes y mandados</button>
+        <button class="category" onclick="startCategory('Pago de facturas')"><span class="ico">🧾</span>Pago de facturas</button>
+        <button class="category" onclick="startCategory('Depósitos bancarios')"><span class="ico">🏦</span>Depósitos bancarios</button>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Tu dirección de entrega</h3>
+      <p class="muted">Se utilizará una sola dirección para todo el pedido.</p>
+      <label for="customerName">Nombre del cliente *</label><input id="customerName" placeholder="Escribe tu nombre" autocomplete="name">
+      <label for="zone">Colonia, barrio o municipio *</label>
+      <select id="zone" onchange="updateAddressAndPrices()"><option value="">Selecciona tu zona</option></select>
+      <div id="otherZoneFields" class="hidden">
+        <label for="otherAddress">Describe tu ubicación *</label><textarea id="otherAddress" placeholder="Municipio, cantón, colonia o comunidad"></textarea>
+        <div class="notice">Pedido sujeto a confirmación previa de cobertura y tarifa por Gonzalez Delivery.</div>
+      </div>
+      <div class="fieldrow">
+        <div><label for="street">Calle o avenida *</label><input id="street" placeholder="Calle / avenida"></div>
+        <div><label for="house">Número de casa *</label><input id="house" placeholder="Casa #"></div>
+      </div>
+      <label for="reference">Punto de referencia (opcional)</label><input id="reference" placeholder="Ej. portón negro, frente a tienda...">
+      <div class="btnrow" style="margin-top:10px">
+        <button class="btn secondary" onclick="shareLocation()">📍 Compartir mi ubicación</button>
+      </div>
+      <p id="gpsStatus" class="smallmuted">La ubicación GPS se solicitará solo si presionas el botón.</p>
+      <label class="checkline"><input type="checkbox" id="remember" onchange="saveRemembered()"> Recordar mis datos en este teléfono</label>
+      <div class="btnrow"><button class="btn secondary small" onclick="loadRemembered()">Cargar mis datos</button><button class="btn ghost small" onclick="clearRemembered()">Borrar mis datos guardados</button></div>
+    </div>
+    <div class="panel">
+      <h3>Forma de pago</h3>
+      <p class="muted">Los datos de transferencia y el link de pago se coordinarán por WhatsApp.</p>
+      <div class="choicegrid" id="paymentChoices">
+        <button class="choice" onclick="setPayment('Efectivo',this)">💵 Efectivo</button>
+        <button class="choice" onclick="setPayment('Transferencia bancaria',this)">🏦 Transferencia bancaria</button>
+        <button class="choice" onclick="setPayment('Link de pago',this)">🔗 Link de pago</button>
+      </div>
+      <div id="cashFields" class="hidden">
+        <label for="cashAmount">¿Con cuánto pagarás?</label>
+        <select id="cashAmount"><option value="">Selecciona</option><option>$5</option><option>$10</option><option>$20</option><option>$50</option><option value="Otro monto">Otro monto</option></select>
+        <label class="checkline"><input type="checkbox" id="needChange"> Necesito cambio</label>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Horario de entrega</h3>
+      <div class="choicegrid">
+        <button class="choice selected" id="asapBtn" onclick="setDeliveryMode('asap')">⚡ Lo antes posible</button>
+        <button class="choice" id="timeBtn" onclick="setDeliveryMode('time')">🕒 Elegir hora</button>
+      </div>
+      <div id="timeField" class="hidden"><label for="deliveryTime">Hora preferida (hoy)</label><input id="deliveryTime" type="time"><p class="smallmuted">La hora solicitada está sujeta a disponibilidad.</p></div>
+      <div id="afterHours" class="notice hidden">Estamos fuera del horario de atención (8:00 a. m. a 8:00 p. m.). Puedes enviar tu pedido y será atendido el siguiente día de servicio.</div>
+    </div>
+  </section>
+
+  <section id="builder" class="hidden">
+    <div class="topline"><button class="btn ghost small" onclick="goHome()">← Volver</button><span class="badge">Agregar servicio</span></div>
+    <h2 id="builderTitle"></h2>
+    <div id="builderContent"></div>
+  </section>
+
+  <section id="tariffs" class="hidden">
+    <div class="topline"><h2>Consultar tarifas</h2><button class="btn ghost small" onclick="goHome()">← Volver</button></div>
+    <div class="panel"><p class="muted">Tarifa base según el lugar de entrega. Cada lugar de recogida adicional suma $1.50. Cada lugar de Compras suma $0.50 adicional.</p><div id="tariffList"></div></div>
+    <div class="panel"><h3>Depósitos bancarios</h3><p class="muted">Esta categoría no utiliza tarifa por zona. El costo depende únicamente de la cantidad a depositar:</p><div class="tariff-row"><span>De $0.00 a $100.00</span><b>$2.50</b></div><div class="tariff-row"><span>Más de $100.00 hasta $200.00</span><b>$3.50</b></div><div class="tariff-row"><span>Más de $200.00</span><b>$4.50</b></div></div>
+  </section>
+
+  <section id="review" class="hidden">
+    <div class="topline"><h2>Revisa tu pedido</h2><button class="btn ghost small" onclick="goHome()">← Volver</button></div>
+    <div id="reviewContent"></div>
+    <div class="panel">
+      <h3>Resumen de entrega</h3><div id="reviewAddress"></div>
+      <hr><div id="reviewTotal"></div>
+      <button class="btn full" style="margin-top:14px" onclick="sendWhatsApp()">Enviar pedido por WhatsApp</button>
+      <p class="smallmuted">WhatsApp se abrirá con el mensaje preparado. Debes pulsar «Enviar» dentro de WhatsApp. Las fotografías se adjuntan manualmente en el chat.</p>
+    </div>
+  </section>
+  <div class="footer">Gonzalez Delivery · Atención de 8:00 a. m. a 8:00 p. m.</div>
+</main>
+
+<div class="sticky" id="stickyBar">
+  <div class="stickyinner"><div><strong id="stickyCount">0 lugares agregados</strong><span id="stickyPrice">Tarifa pendiente de zona</span></div><button class="btn" onclick="openReview()">Ver mi pedido</button></div>
+</div>
+
+<script>
+const WA_NUMBER='50376749645';
+const zones=[
+ {n:1,p:1.50,places:['Barrio El Centro','San Francisco','San Juan de Dios','Calvario','Santa Elena','Espiga de Oro','Santa Lucía','Vaquerano']},
+ {n:2,p:1.75,places:['Agua Caliente','Barrio Concepción','Colonia Durán','Caridad','Los Ángeles','Villas','IVU','California','Bonanza']},
+ {n:3,p:2.00,places:['Gloria','San Cristóbal','Lorenzana','Amapulapa','Cantón Flores','San Ignacio','Las Minas','Valle Verde','Santa Rosa','Navarra 1 y 2','Brisas Santa Elena']},
+ {n:4,p:2.50,places:['Primavera','Cañaveral']},
+ {n:5,p:3.00,places:['Brisas 1','San Cayetano Istepeque','Entrevista']},
+ {n:6,p:3.50,places:['Tepetitán','Brisas 2','Desvío']},
+ {n:7,p:4.00,places:['San Antonio Caminos','Apastepeque (centro)']},
+ {n:8,p:5.00,places:['Verapaz','Km 51','Ingenio','Cruzadilla','San Esteban Catarina']},
+ {n:9,p:8.00,places:['Guadalupe','Tecoluca','San Lorenzo']},
+ {n:10,p:10.00,places:['Santo Domingo','Santa Clara']},
+ {n:11,p:12.00,places:['San Sebastián']},
+ {n:12,p:15.00,places:['Cedros','Zacatecoluca']}
+];
+const lists={
+ 'Comida':['Pimentón','Crepe Café','Pupusería Mary','Cocina de Mamá Esperanza','Cocina de Pame','Wan Tan','Pollo Campestre','Papas Fritz','Boston Heladería','La Nevería','Sarita’s','Don Pollo','Pollo Frysby','Pupusería Wendy','Localito','Pupusería Jenny','Pupusería Teresita','Antojitos Santa Elena','Chory','Meus Meninos','Pizza Hut','Little Caesars','Pollo Campero','Subway'],
+ 'Medicinas':['Farmacia La Buena','Farmacia Vicentina','Farmacia San Nicolás','Farmacia Belén','Farmacia Brasil','Farmacia CEFAFA','Farmacias Económicas','Farmacia Don Bosco','Farmacia La Moderna','Farmacia Azaleas','Farmacias Virgen de Guadalupe'],
+ 'Compras':['Maxi Despensa San Vicente','Súper Selectos San Vicente','Despensa Familiar','Súper Éxito','Súper Alameda','Distribuidora Probasic','Dollarcity San Vicente','Súper Tienda Rosita','Negocio Los Ángeles','Dulcería Villalta','Mercado Municipal de San Vicente'],
+ 'Paquetes y mandados':['Pedidos Xpress','Express El Salvador','C807','MeloExpress','Martita Ascencio'],
+ 'Pago de facturas':['Otra empresa / servicio'],
+ 'Depósitos bancarios':['Banco Agrícola','BAC','Banco Cuscatlán','Banco Davivienda','Otro banco']
+};
+let order=[],payment='',deliveryMode='asap',gpsLink='',currentCategory='';
+const $=id=>document.getElementById(id);
+function money(n){return '$'+Number(n).toFixed(2)}
+function show(id){['home','builder','tariffs','review'].forEach(x=>$(x).classList.toggle('hidden',x!==id));}
+function fillZones(){
+ const s=$('zone'); zones.forEach(z=>z.places.forEach(p=>{let o=document.createElement('option');o.value=p;o.textContent=`${p} — Zona ${z.n} (${money(z.p)})`;s.appendChild(o)}));
+ let o=document.createElement('option');o.value='__other';o.textContent='Otra ubicación (cotizar cobertura)';s.appendChild(o);
+ $('tariffList').innerHTML=zones.map(z=>`<div class="tariff-row"><div><b>Zona ${z.n}</b><div class="smallmuted">${z.places.join(', ')}</div></div><b>${money(z.p)}</b></div>`).join('');
+}
+function getZone(){let val=$('zone').value;if(val==='__other')return {other:true};for(let z of zones)if(z.places.includes(val))return z;return null}
+function updateAddressAndPrices(){
+ $('otherZoneFields').classList.toggle('hidden',$('zone').value!=='__other');
+ updateSticky();
+}
+function zonePrice(){let z=getZone();return z&&!z.other?z.p:null}
+function depositFee(amount){
+ let value=Number(amount);
+ if(!Number.isFinite(value)||value<=0)return null;
+ if(value<=100)return 2.50;
+ if(value<=200)return 3.50;
+ return 4.50;
+}
+function calcTotal(){
+ if(!order.length)return 0;
+ let total=0;
+ for(let i=0;i<order.length;i++){
+  const x=order[i];
+  if(x.category==='Depósitos bancarios'){
+   const fee=depositFee(x.details?.cantidad);
+   if(fee===null)return null;
+   total+=fee;
+  }else{
+   const base=zonePrice();
+   if(base===null)return null;
+   total+=(i===0?base:1.50);
+   if(x.category==='Compras')total+=.50;
+  }
+ }
+ return total;
+}
+function updateSticky(){
+ $('stickyCount').textContent=order.length+' '+(order.length===1?'lugar agregado':'lugares agregados');
+ let t=calcTotal();$('stickyPrice').textContent=t===null?'Tarifa pendiente de cobertura':order.length?('Tarifa estimada: '+money(t)):'Selecciona servicios para calcular';
+}
+function startCategory(cat){
+ currentCategory=cat;show('builder');$('builderTitle').textContent=cat;
+ let html='';
+ if(cat==='Comida'||cat==='Medicinas'||cat==='Compras'||cat==='Paquetes y mandados'||cat==='Depósitos bancarios'){
+  html+=`<div class="panel"><label>Selecciona el establecimiento o lugar *</label><select id="placeSelect"><option value="">Selecciona</option>${(lists[cat]||[]).map(x=>`<option>${x}</option>`).join('')}<option value="__other">No aparece en la lista</option></select><div id="otherPlaceWrap" class="hidden"><label>Escribe el nombre</label><input id="otherPlace" placeholder="Nombre del establecimiento"></div></div>`;
+ }else{
+  html+=`<div class="panel"><label>Servicio</label><select id="billType"><option>Agua</option><option>Energía eléctrica</option><option>Telefonía</option><option>Internet</option><option>Cable y televisión</option><option>Recargas telefónicas</option><option>Otra factura</option></select></div>`;
+ }
+ if(cat==='Paquetes y mandados'){
+  html+=`<div class="panel"><h3>¿Qué necesitas?</h3><div class="choicegrid"><button class="choice selected" id="sendMode" onclick="setPackageMode('Enviar')">📤 Enviar paquete</button><button class="choice" id="pickupMode" onclick="setPackageMode('Retirar')">📥 Retirar paquete</button></div><div id="packageFields">${packageForm('Enviar')}</div></div>`;
+ }else if(cat==='Depósitos bancarios'){
+  html+=`<div class="panel"><label>Banco donde se realizará el depósito *</label><select id="bank"><option>Banco Agrícola</option><option>BAC</option><option>Banco Cuscatlán</option><option>Banco Davivienda</option><option>Otro banco</option></select><label>Ubicación donde recogeremos el dinero *</label><input id="pickupMoney" placeholder="Lugar donde pasaremos por el dinero"><label>Cantidad a depositar *</label><input id="depositAmount" type="number" min="0.01" step="0.01" placeholder="0.00"></div>`;
+ }else if(cat==='Pago de facturas'){
+  html+=`<div class="panel"><label>Tipo de servicio *</label><select id="billType"><option>Agua</option><option>Energía eléctrica</option><option>Telefonía</option><option>Internet</option><option>Cable y televisión</option><option>Recargas telefónicas</option><option>Otra factura</option></select><label>Empresa *</label><input id="billCompany" placeholder="Nombre de la empresa"><label>Número de recibo o referencia *</label><input id="billRef" placeholder="Referencia del recibo"><label>Monto a pagar *</label><input id="billAmount" type="number" min="0.01" step="0.01" placeholder="0.00"><label>Ubicación donde recogeremos el dinero *</label><input id="billPickup" placeholder="Lugar para recoger el dinero"><div class="notice">📸 Después de enviar el pedido, adjunta una fotografía del recibo en WhatsApp.</div></div>`;
+ }else{
+  html+=`<div class="panel"><div id="itemsWrap"></div><button class="btn secondary small" onclick="addItem()">＋ Agregar otro producto</button><div id="specialWrap"></div></div>`;
+  if(cat==='Medicinas')html+=`<div class="notice">📸 Si tienes receta o fotografía del medicamento, adjúntala manualmente en el chat de WhatsApp después de enviar el pedido.</div>`;
+  if(cat==='Compras')html+=`<div class="notice">La tarifa de Compras lleva $0.50 adicionales por lugar. Puede aumentar según el tiempo, peso o volumen. Cualquier recargo se consultará contigo antes de comprar.</div><div class="notice info">📸 Puedes adjuntar una fotografía de tu lista en el chat de WhatsApp.</div>`;
+ }
+ html+=`<div class="panel"><label>Instrucciones especiales para este lugar (opcional)</label><textarea id="placeNotes" placeholder="Indicaciones para este establecimiento..."></textarea></div>`;
+ html+=`<button class="btn full" onclick="addPlace()">Agregar este lugar al pedido</button>`;
+ $('builderContent').innerHTML=html;
+ if(cat==='Comida'||cat==='Medicinas'||cat==='Compras'||cat==='Paquetes y mandados'||cat==='Depósitos bancarios'){
+  $('placeSelect').addEventListener('change',()=>{$('otherPlaceWrap').classList.toggle('hidden',$('placeSelect').value!=='__other')});
+ }
+ if(cat==='Comida'||cat==='Medicinas'||cat==='Compras')addItem();
+}
+function packageForm(mode){
+ if(mode==='Enviar')return `<label>Nombre del destinatario *</label><input id="pkgRecipient" placeholder="Nombre completo"><label>Teléfono del destinatario *</label><input id="pkgPhone" type="tel" placeholder="Teléfono"><label>Dirección de entrega *</label><textarea id="pkgAddress" placeholder="Dirección completa"></textarea><label>Departamento / municipio *</label><input id="pkgMunicipality" placeholder="Municipio"><label>Referencias</label><input id="pkgRef" placeholder="Punto de referencia"><label>Descripción del paquete *</label><textarea id="pkgDescription" placeholder="Describe el paquete"></textarea>`;
+ return `<label>Empresa o lugar donde recoger *</label><select id="pkgCompany">${['Pedidos Xpress','Express El Salvador','C807','MeloExpress','Martita Ascencio','Otra empresa'].map(x=>`<option>${x}</option>`).join('')}</select><label>Número de guía o código de retiro *</label><input id="pkgGuide" placeholder="Número de guía"><label>Nombre de quien recibe *</label><input id="pkgRecipient" placeholder="Nombre completo"><label>Dirección donde llevaremos el paquete *</label><textarea id="pkgAddress" placeholder="Dirección de entrega"></textarea><div class="notice">📸 Después de enviar el pedido, adjunta una fotografía del paquete en WhatsApp.</div>`;
+}
+let packageMode='Enviar';
+function setPackageMode(mode){
+ packageMode=mode;$('sendMode').classList.toggle('selected',mode==='Enviar');$('pickupMode').classList.toggle('selected',mode==='Retirar');$('packageFields').innerHTML=packageForm(mode);
+}
+function addItem(){
+ let wrap=$('itemsWrap');let idx=wrap.children.length;let div=document.createElement('div');div.className='panel';div.style.padding='11px';div.innerHTML=`<div class="topline"><b>Producto ${idx+1}</b>${idx?'<button class="remove" onclick="this.parentElement.parentElement.remove()">Quitar</button>':''}</div><label>Nombre del producto *</label><input class="prodName" placeholder="Producto"><div class="fieldrow"><div><label>Cantidad *</label><input class="prodQty" type="number" min="1" value="1"></div><div><label>Tamaño / presentación</label><input class="prodSize" placeholder="Opcional"></div></div>${currentCategory==='Comida'?'<label>Extras</label><input class="prodExtra" placeholder="Extras o complementos">':''}`;
+ wrap.appendChild(div);
+}
+function selectedPlace(){
+ let v=$('placeSelect')?.value||'';
+ if(v==='__other')return $('otherPlace')?.value.trim()||'';
+ return v;
+}
+function addPlace(){
+ let cat=currentCategory, place=selectedPlace();
+ if(cat==='Pago de facturas')place=$('billCompany')?.value.trim()||$('billType')?.value||'Pago de factura';
+ if(!place){alert('Selecciona o escribe el establecimiento.');return}
+ let data={category:cat,place,notes:$('placeNotes')?.value.trim()||''};
+ if(cat==='Comida'||cat==='Medicinas'||cat==='Compras'){
+  let rows=[...$('itemsWrap').querySelectorAll('.panel')];
+  data.items=rows.map(r=>({name:r.querySelector('.prodName')?.value.trim()||'',qty:r.querySelector('.prodQty')?.value||'1',size:r.querySelector('.prodSize')?.value.trim()||'',extra:r.querySelector('.prodExtra')?.value.trim()||''})).filter(x=>x.name);
+  if(!data.items.length){alert('Agrega al menos un producto.');return}
+  if(rows.some(r=>!r.querySelector('.prodName')?.value.trim())){alert('Completa el nombre de cada producto o elimina el espacio vacío.');return}
+ }else if(cat==='Paquetes y mandados'){
+  data.mode=packageMode;
+  const get=id=>$(id)?.value.trim()||'';
+  if(packageMode==='Enviar'){
+   data.details={destinatario:get('pkgRecipient'),telefono:get('pkgPhone'),direccion:get('pkgAddress'),municipio:get('pkgMunicipality'),referencia:get('pkgRef'),descripcion:get('pkgDescription')};
+   if(!data.details.destinatario||!data.details.telefono||!data.details.direccion||!data.details.municipio||!data.details.descripcion){alert('Completa los campos obligatorios del envío.');return}
+  }else{
+   data.place=get('pkgCompany');data.details={guia:get('pkgGuide'),destinatario:get('pkgRecipient'),direccion:get('pkgAddress')};
+   if(!data.details.guia||!data.details.destinatario||!data.details.direccion){alert('Completa los datos para retirar el paquete.');return}
+   data.photoNotice=true;
+  }
+ }else if(cat==='Pago de facturas'){
+  const get=id=>$(id)?.value.trim()||'';
+  data.details={tipo:get('billType'),empresa:get('billCompany'),referencia:get('billRef'),monto:get('billAmount'),recoger:get('billPickup')};
+  if(!data.details.empresa||!data.details.referencia||!data.details.monto||!data.details.recoger){alert('Completa los datos de la factura.');return}
+  data.photoNotice=true;
+ }else if(cat==='Depósitos bancarios'){
+  const get=id=>$(id)?.value.trim()||'';
+  data.details={banco:get('bank'),recoger:get('pickupMoney'),cantidad:get('depositAmount')};
+  if(!data.details.recoger||!data.details.cantidad||Number(data.details.cantidad)<=0){alert('Completa la ubicación de cobro y una cantidad válida.');return}
+ }else if(cat==='Medicinas'){}
+ order.push(data);updateSticky();goHome();alert('Lugar agregado al pedido.');
+}
+function goHome(){show('home');updateSticky()}
+function showTariffs(){show('tariffs')}
+function setPayment(p,el){payment=p;document.querySelectorAll('#paymentChoices .choice').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');$('cashFields').classList.toggle('hidden',p!=='Efectivo')}
+function setDeliveryMode(mode){deliveryMode=mode;$('asapBtn').classList.toggle('selected',mode==='asap');$('timeBtn').classList.toggle('selected',mode==='time');$('timeField').classList.toggle('hidden',mode!=='time')}
+function shareLocation(){
+ if(!navigator.geolocation){$('gpsStatus').textContent='Este navegador no permite compartir ubicación GPS.';return}
+ $('gpsStatus').textContent='Obteniendo ubicación...';
+ navigator.geolocation.getCurrentPosition(pos=>{gpsLink=`https://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;$('gpsStatus').textContent='Ubicación lista. Se incluirá el enlace de mapa en tu pedido.'},()=>{$('gpsStatus').textContent='No se pudo obtener la ubicación. Revisa los permisos del navegador.'},{enableHighAccuracy:true,timeout:12000});
+}
+function saveRemembered(){
+ if(!$('remember').checked){return}
+ const data={name:$('customerName').value,zone:$('zone').value,other:$('otherAddress').value,street:$('street').value,house:$('house').value,reference:$('reference').value};
+ localStorage.setItem('gd_customer',JSON.stringify(data));
+}
+function loadRemembered(){
+ try{let d=JSON.parse(localStorage.getItem('gd_customer')||'null');if(!d){alert('No hay datos guardados en este teléfono.');return}
+ $('customerName').value=d.name||'';$('zone').value=d.zone||'';$('otherAddress').value=d.other||'';$('street').value=d.street||'';$('house').value=d.house||'';$('reference').value=d.reference||'';$('remember').checked=true;updateAddressAndPrices();alert('Datos cargados.');}catch(e){alert('No se pudieron cargar los datos.')}
+}
+function clearRemembered(){localStorage.removeItem('gd_customer');$('remember').checked=false;alert('Se borraron los datos guardados en este teléfono.')}
+['customerName','zone','otherAddress','street','house','reference'].forEach(id=>$(id).addEventListener('change',()=>{if($('remember').checked)saveRemembered()}));
+function addressText(){
+ let z=$('zone').value;let zone=z==='__other'?'Otra ubicación (por cotizar)':z;
+ return `${zone}; Calle/avenida: ${$('street').value}; Casa: ${$('house').value}`+($('reference').value?`; Referencia: ${$('reference').value}`:'')+($('otherAddress').value?`; Descripción: ${$('otherAddress').value}`:'');
+}
+function placeCost(i,x){
+ if(x.category==='Depósitos bancarios')return depositFee(x.details?.cantidad);
+ let base=zonePrice();if(base===null)return null;
+ return (i===0?base:1.50)+(x.category==='Compras'?.50:0);
+}
+function openReview(){
+ if(!order.length){alert('Agrega al menos un lugar a tu pedido.');return}
+ let name=$('customerName').value.trim();
+ if(!name||!$('zone').value||!$('street').value.trim()||!$('house').value.trim()){alert('Completa nombre y dirección de entrega antes de revisar el pedido.');return}
+ if($('zone').value==='__other'&&!$('otherAddress').value.trim()){alert('Describe tu ubicación para solicitar confirmación de cobertura.');return}
+ if(!payment){alert('Selecciona una forma de pago.');return}
+ renderReview();show('review');
+}
+function itemText(x){return (x.items||[]).map(it=>`• ${escapeHtml(it.name)} x${escapeHtml(it.qty)}${it.size?' — '+escapeHtml(it.size):''}${it.extra?' — Extras: '+escapeHtml(it.extra):''}`).join('<br>')}
+function renderReview(){
+ $('reviewContent').innerHTML=order.map((x,i)=>{let c=placeCost(i,x);let details='';
+ if(x.items)details=itemText(x);
+ if(x.mode)details=`<b>${x.mode}</b><br>`+Object.entries(x.details||{}).map(([k,v])=>`${k}: ${v}`).join('<br>');
+ if(x.category==='Pago de facturas'||x.category==='Depósitos bancarios')details=Object.entries(x.details||{}).map(([k,v])=>`${k}: ${v}`).join('<br>');
+ return `<div class="summary-card"><div class="place-head"><div><span class="badge">${x.category}</span><br><strong>${escapeHtml(x.place)}</strong></div><div class="place-cost">${c===null?'Por cotizar':money(c)}</div></div><p>${details}</p>${x.notes?`<p><b>Instrucciones:</b> ${escapeHtml(x.notes)}</p>`:''}<div class="btnrow"><button class="btn secondary small" onclick="editPlace(${i})">Editar</button><button class="btn ghost small" onclick="removePlace(${i})">Quitar</button></div></div>`}).join('');
+ $('reviewAddress').innerHTML=`<b>${escapeHtml($('customerName').value)}</b><br>${escapeHtml(addressText())}${gpsLink?`<br><a style="color:#ff777d" href="${gpsLink}" target="_blank" rel="noopener">Ver ubicación GPS</a>`:''}`;
+ let t=calcTotal();$('reviewTotal').innerHTML=`<div class="topline"><b>Tarifa estimada de entrega</b><strong style="color:#ff7378;font-size:22px">${t===null?'Por confirmar':money(t)}</strong></div><p class="smallmuted">Los demás servicios usan la tarifa de zona; cada lugar adicional suma $1.50 y cada lugar de Compras suma $0.50. Depósitos bancarios se cobran según la tabla por cantidad depositada, sin tarifa de zona.</p>`;
+}
+function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function removePlace(i){order.splice(i,1);updateSticky();if(!order.length)goHome();else renderReview()}
+function editPlace(i){
+ const x=order[i];
+ const newPlace=prompt('Nombre del establecimiento o lugar:',x.place);if(newPlace===null)return;if(newPlace.trim())x.place=newPlace.trim();
+ if(x.items){x.items.forEach((it,j)=>{let n=prompt(`Producto ${j+1}:`,it.name);if(n!==null&&n.trim())it.name=n.trim();let q=prompt(`Cantidad de ${it.name}:`,it.qty);if(q!==null&&q.trim())it.qty=q.trim();let sz=prompt(`Tamaño / presentación de ${it.name}:`,it.size||'');if(sz!==null)it.size=sz.trim();if(x.category==='Comida'){let ex=prompt(`Extras de ${it.name}:`,it.extra||'');if(ex!==null)it.extra=ex.trim();}})}
+ if(x.details){Object.keys(x.details).forEach(k=>{let v=prompt(`Editar ${k}:`,x.details[k]||'');if(v!==null)x.details[k]=v.trim();});}
+ let notes=prompt('Instrucciones especiales:',x.notes||'');if(notes!==null)x.notes=notes.trim();renderReview();
+}
+function sendWhatsApp(){
+ if(!navigator.onLine){alert('Sin conexión a internet. Verifica tu conexión antes de enviar el pedido por WhatsApp.');return}
+ let name=$('customerName').value.trim();if(!name){alert('Escribe tu nombre.');return}
+ let zone=getZone();let ztxt=zone?.other?'Otra ubicación — tarifa y cobertura por confirmar':`${$('zone').value} (Zona ${zone?.n})`;
+ let total=calcTotal();let msg=`*NUEVO PEDIDO — GONZALEZ DELIVERY*%0A%0A*Cliente:* ${encodeURIComponent(name)}%0A*Dirección:* ${encodeURIComponent(addressText())}%0A*Forma de pago:* ${encodeURIComponent(payment)}`;
+ if(payment==='Efectivo')msg+=`%0A*Pagará con:* ${encodeURIComponent($('cashAmount').value||'No especificado')}%0A*Necesita cambio:* ${$('needChange').checked?'Sí':'No'}`;
+ msg+=`%0A*Zona:* ${encodeURIComponent(ztxt)}%0A%0A*LUGARES Y SERVICIOS*`;
+ order.forEach((x,i)=>{
+  let c=placeCost(i,x);msg+=`%0A%0A*${i+1}. ${encodeURIComponent(x.category)} — ${encodeURIComponent(x.place)}*`;
+  if(x.items)x.items.forEach(it=>{msg+=`%0A• ${encodeURIComponent(it.name)} x${encodeURIComponent(it.qty)}${it.size?' — '+encodeURIComponent(it.size):''}${it.extra?' — Extras: '+encodeURIComponent(it.extra):''}`});
+  if(x.mode)msg+=`%0A*Modalidad:* ${encodeURIComponent(x.mode)}`;
+  if(x.details)Object.entries(x.details).forEach(([k,v])=>{if(v)msg+=`%0A${encodeURIComponent(k)}: ${encodeURIComponent(v)}`});
+  if(x.notes)msg+=`%0A*Instrucciones:* ${encodeURIComponent(x.notes)}`;
+  msg+=`%0A*Tarifa de este lugar:* ${c===null?'Por cotizar':money(c)}`;
+  if(x.category==='Compras')msg+=`%0A*Nota:* Posible recargo según tiempo, peso o volumen; se consulta antes de comprar.`;
+  if(x.category==='Depósitos bancarios')msg+=`%0A*Tarifa de depósito:* ${depositFee(x.details?.cantidad)===null?'Por confirmar':money(depositFee(x.details?.cantidad))} (según cantidad, sin tarifa de zona).`;
+  if(x.photoNotice||['Compras','Medicinas','Pago de facturas'].includes(x.category))msg+=`%0A*Fotografía:* El cliente la adjuntará manualmente en este chat.`;
+ });
+ let time=deliveryMode==='time'&&$('deliveryTime').value?$('deliveryTime').value:'Lo antes posible';
+ msg+=`%0A%0A*Hora solicitada:* ${encodeURIComponent(time)} (sujeta a disponibilidad)`;
+ msg+=`%0A*Tarifa total estimada:* ${total===null?'Por confirmar':money(total)}`;
+ if(zone?.other)msg+=`%0A*IMPORTANTE:* Pedido sujeto a confirmación previa de cobertura y tarifa.`;
+ if(gpsLink)msg+=`%0A*Ubicación GPS:* ${encodeURIComponent(gpsLink)}`;
+ let url=`https://wa.me/${WA_NUMBER}?text=${msg}`;
+ window.location.href=url;
+}
+function setHours(){
+ let now=new Date(),h=now.getHours();let open=h>=8&&h<20;
+ $('hoursNotice').textContent=open?'Horario de atención: 8:00 a. m. a 8:00 p. m. Estamos dentro del horario de servicio.':'Fuera del horario de atención. Puedes enviar tu pedido y será atendido el siguiente día de servicio.';
+ $('afterHours').classList.toggle('hidden',open);
+}
+function setInitialTimeMin(){let d=new Date();if(d.getHours()>=8&&d.getHours()<20){let h=String(d.getHours()).padStart(2,'0'),m=String(d.getMinutes()).padStart(2,'0');$('deliveryTime').min=`${h}:${m}`}}
+fillZones();setHours();setInitialTimeMin();updateSticky();
+</script>
+</body>
+</html>
